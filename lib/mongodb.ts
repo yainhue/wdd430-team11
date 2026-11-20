@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 const uri = process.env.MONGODB_URI;
 
 if (!uri) {
-  throw new Error("Please add MONGODB_URI to your environment variables.");
+  throw new Error("MONGODB_URI to our environment variables.");
 }
 
 const globalForMongo = globalThis as typeof globalThis & {
