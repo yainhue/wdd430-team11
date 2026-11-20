@@ -19,7 +19,7 @@ The users collection already exists. Services and bookings are proposed collecti
 | emailVerified | Date or null | Verification date |
 | createdAt | Date | Registration date |
 
-## 3. Services Collection (Proposed)
+## 3. Services Collection (Implemented)
 
 | Field | Type | Description |
 |---|---|---|
@@ -31,7 +31,7 @@ The users collection already exists. Services and bookings are proposed collecti
 | price | Number | Service price |
 | currency | String | Price currency |
 | location | String | Service location |
-| status | String | active or inactive |
+| status | String | active |
 | createdAt | Date | Creation date |
 | updatedAt | Date | Last update |
 

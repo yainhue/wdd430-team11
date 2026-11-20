@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useState, type FormEvent } from "react";
 
@@ -106,6 +107,26 @@ export function AuthScreen() {
             You’re signed in as a {roleLabel}. Your local services journey starts
             here.
           </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/services"
+              className="rounded-xl bg-[#c2410c] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#9a3412]"
+            >
+              Browse services
+            </Link>
+            <Link
+              href="/dashboard"
+              className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/profile"
+              className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+            >
+              Edit profile
+            </Link>
+          </div>
           <button
             type="button"
             onClick={() => signOut()}
@@ -174,6 +195,12 @@ export function AuthScreen() {
               ? "A few details and you’re ready to get started."
               : "Your next great local connection is waiting."}
           </p>
+          <Link
+            href="/services"
+            className="mt-4 inline-flex text-sm font-semibold text-[#123984] underline-offset-4 hover:underline"
+          >
+            Browse services without signing in
+          </Link>
 
           <div className="mt-8 grid grid-cols-2 rounded-xl bg-slate-100 p-1">
             <button

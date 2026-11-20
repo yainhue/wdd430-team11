@@ -52,8 +52,38 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) token.role = user.role;
+
+      if (trigger === "update" && token.sub) {
+        if (!ObjectId.isValid(token.sub)) {
+          throw new Error("The authenticated session has an invalid account identifier.");
+        }
+
+        const account = await mongoClient
+          .db()
+          .collection<{
+            name: string;
+            email: string;
+            role: "customer" | "provider";
+          }>("users")
+          .findOne(
+            { _id: new ObjectId(token.sub) },
+            { projection: { name: 1, email: 1, role: 1 } },
+          );
+
+        if (
+          !account ||
+          (account.role !== "customer" && account.role !== "provider")
+        ) {
+          throw new Error("The authenticated account could not be refreshed.");
+        }
+
+        token.name = account.name;
+        token.email = account.email;
+        token.role = account.role;
+      }
+
       return token;
     },
     session({ session, token }) {

@@ -25,6 +25,12 @@ password, and assigns the selected customer or provider role. Login uses
 Auth.js Credentials and a JWT-backed session. Never commit `.env.local` or
 production secrets.
 
+Signed-in users can update their name and email at `/profile`. Providers can
+create, view, update, and delete their service listings from `/dashboard`.
+Active listings are searchable at `/services`. Profile and listing changes are
+validated on the server and stored in MongoDB; listing mutations are restricted
+to the owning provider.
+
 
 ## Design Choices
 MVP Pages / Routes:
