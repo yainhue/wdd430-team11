@@ -16,4 +16,7 @@ if (process.env.NODE_ENV !== "production") {
   globalForMongo.mongoClient = mongoClient;
 }
 
+// connect the mongoClient to the database using the database URI (MONGODB_URI from the .env file)
+await mongoClient.connect();
+
 export { mongoClient };
