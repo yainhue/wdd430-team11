@@ -19,7 +19,10 @@ export async function GET(
 ) {
   const { id } = await context.params;
   if (!ObjectId.isValid(id)) {
-    return Response.json({ error: "Service listing not found." }, { status: 404 });
+    return Response.json(
+      { error: "Service listing not found." },
+      { status: 404 },
+    );
   }
 
   try {
@@ -29,16 +32,16 @@ export async function GET(
       .findOne({ _id: new ObjectId(id), status: "active" });
 
     if (!service) {
-      return Response.json({ error: "Service listing not found." }, { status: 404 });
+      return Response.json(
+        { error: "Service listing not found." },
+        { status: 404 },
+      );
     }
 
     const provider = await mongoClient
       .db()
       .collection<{ name: string }>("users")
-      .findOne(
-        { _id: service.providerId },
-        { projection: { name: 1 } },
-      );
+      .findOne({ _id: service.providerId }, { projection: { name: 1 } });
 
     return Response.json({
       service: {
@@ -67,22 +70,34 @@ export async function PATCH(
 ) {
   const session = await auth();
   if (!session?.user) {
-    return Response.json({ error: "Please sign in to update this listing." }, { status: 401 });
+    return Response.json(
+      { error: "Please sign in to update this listing." },
+      { status: 401 },
+    );
   }
   if (session.user.role !== "provider") {
-    return Response.json({ error: "Only providers can update service listings." }, { status: 403 });
+    return Response.json(
+      { error: "Only providers can update service listings." },
+      { status: 403 },
+    );
   }
 
   const { id } = await context.params;
   if (!ObjectId.isValid(id) || !ObjectId.isValid(session.user.id)) {
-    return Response.json({ error: "Service listing not found." }, { status: 404 });
+    return Response.json(
+      { error: "Service listing not found." },
+      { status: 404 },
+    );
   }
 
   let input: unknown;
   try {
     input = await request.json();
   } catch {
-    return Response.json({ error: "Please submit valid service details." }, { status: 400 });
+    return Response.json(
+      { error: "Please submit valid service details." },
+      { status: 400 },
+    );
   }
 
   const service = parseServiceInput(input);
@@ -107,7 +122,10 @@ export async function PATCH(
     );
 
     if (result.matchedCount === 0) {
-      return Response.json({ error: "Service listing not found." }, { status: 404 });
+      return Response.json(
+        { error: "Service listing not found." },
+        { status: 404 },
+      );
     }
 
     return Response.json({ message: "Service listing updated." });
@@ -126,15 +144,24 @@ export async function DELETE(
 ) {
   const session = await auth();
   if (!session?.user) {
-    return Response.json({ error: "Please sign in to delete this listing." }, { status: 401 });
+    return Response.json(
+      { error: "Please sign in to delete this listing." },
+      { status: 401 },
+    );
   }
   if (session.user.role !== "provider") {
-    return Response.json({ error: "Only providers can delete service listings." }, { status: 403 });
+    return Response.json(
+      { error: "Only providers can delete service listings." },
+      { status: 403 },
+    );
   }
 
   const { id } = await context.params;
   if (!ObjectId.isValid(id) || !ObjectId.isValid(session.user.id)) {
-    return Response.json({ error: "Service listing not found." }, { status: 404 });
+    return Response.json(
+      { error: "Service listing not found." },
+      { status: 404 },
+    );
   }
 
   try {
@@ -147,7 +174,10 @@ export async function DELETE(
       });
 
     if (result.deletedCount === 0) {
-      return Response.json({ error: "Service listing not found." }, { status: 404 });
+      return Response.json(
+        { error: "Service listing not found." },
+        { status: 404 },
+      );
     }
 
     return Response.json({ message: "Service listing deleted." });

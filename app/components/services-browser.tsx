@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-type Service = {
+export type Service = {
   id: string;
   providerName: string;
   title: string;
@@ -71,7 +71,10 @@ export function ServicesBrowser() {
       </div>
 
       {error && (
-        <p role="alert" className="mt-6 rounded-xl bg-rose-50 p-4 text-sm text-rose-700">
+        <p
+          role="alert"
+          className="mt-6 rounded-xl bg-rose-50 p-4 text-sm text-rose-700"
+        >
           {error}
         </p>
       )}
@@ -86,23 +89,25 @@ export function ServicesBrowser() {
       ) : (
         <ul className="mt-8 grid gap-5 md:grid-cols-2">
           {visibleServices.map((service) => (
-            <li
-              key={service.id}
-              className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
-            >
-              <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-[#123984]">
-                {service.category}
-              </span>
-              <h2 className="mt-4 text-xl font-semibold text-slate-900">
-                {service.title}
-              </h2>
-              <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-600">
-                {service.description}
-              </p>
-              <p className="mt-5 border-t border-slate-100 pt-4 text-sm text-slate-500">
-                Offered by <span className="font-medium text-slate-700">{service.providerName}</span>
-              </p>
-            </li>
+            <Link href={`/services/${service.id}`} key={service.id}>
+              <li className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-transform duration-500 hover:scale-102 hover:bg-blue-50 hover:cursor-pointer">
+                <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-[#123984]">
+                  {service.category}
+                </span>
+                <h2 className="mt-4 text-xl font-semibold text-slate-900">
+                  {service.title}
+                </h2>
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-600">
+                  {service.description}
+                </p>
+                <p className="mt-5 border-t border-slate-100 pt-4 text-sm text-slate-500">
+                  Offered by{" "}
+                  <span className="font-medium text-slate-700">
+                    {service.providerName}
+                  </span>
+                </p>
+              </li>
+            </Link>
           ))}
         </ul>
       )}
