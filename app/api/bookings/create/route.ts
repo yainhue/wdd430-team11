@@ -1,5 +1,3 @@
-import { MongoServerError } from "mongodb";
-import { hash } from "bcryptjs";
 import { mongoClient } from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 

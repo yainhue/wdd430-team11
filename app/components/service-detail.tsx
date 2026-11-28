@@ -1,5 +1,11 @@
-import { type Service } from "@/app/components/services-browser";
-import { type State, createBooking } from "@/lib/actions";
+// "use server";
+
+import {
+  type State,
+  createBooking,
+  findBookingId,
+  cancelBooking,
+} from "@/lib/actions";
 import { auth } from "@/auth";
 
 interface MeetingDetailProps {
@@ -65,8 +71,8 @@ export async function ServiceDetail({ id }: MeetingDetailProps) {
         customerId = session.user.id;
       }
 
-      const createBookingWithIds = createBooking.bind(
-        null,
+      // check to see if the booking already exists in the DB
+      const bookingId = await findBookingId(
         customerId,
         service.providerId,
         service.id,
@@ -113,11 +119,31 @@ export async function ServiceDetail({ id }: MeetingDetailProps) {
               </p>
             </div> */}
 
-                <form action={createBookingWithIds} className="flex">
-                  <button className="flex-1 rounded-xl bg-[#c2410c] px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#9a3412] hover:cursor-pointer">
-                    Book Service
-                  </button>
-                </form>
+                {/* conditional: if the booking already exists, show cancel booking button instead, else show create booking button*/}
+                {bookingId != undefined && bookingId != "undefined" ? (
+                  <form
+                    action={cancelBooking.bind(null, bookingId, service.id)}
+                    className="flex"
+                  >
+                    <button className="flex-1 rounded-xl bg-[#c2410c] px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#9a3412] hover:cursor-pointer">
+                      Cancel Booking
+                    </button>
+                  </form>
+                ) : (
+                  <form
+                    action={createBooking.bind(
+                      null,
+                      customerId,
+                      service.providerId,
+                      service.id,
+                    )}
+                    className="flex"
+                  >
+                    <button className="flex-1 rounded-xl bg-[#c2410c] px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#9a3412] hover:cursor-pointer">
+                      Book Service
+                    </button>
+                  </form>
+                )}
 
                 <button className="rounded-xl bg-[#c2410c] px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#9a3412] hover:cursor-pointer">
                   Contact Provider
