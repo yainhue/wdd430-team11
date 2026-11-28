@@ -28,7 +28,7 @@ export async function ServiceDetail({ id }: MeetingDetailProps) {
 
     // if something goes wrong...
     if (!response.ok || !result.service) {
-      console.log(result.error ?? "Your listings could not be loaded.");
+      console.log(result.error ?? "This listing could not be loaded.");
 
       // render a 404 not found error page
       return (
@@ -78,6 +78,8 @@ export async function ServiceDetail({ id }: MeetingDetailProps) {
         service.id,
       );
 
+      const userType = String(session?.user.role);
+
       return (
         // display service details + booking link
         // commented out some <p> that we are not using based on our system right now.
@@ -119,35 +121,42 @@ export async function ServiceDetail({ id }: MeetingDetailProps) {
               </p>
             </div> */}
 
-                {/* conditional: if the booking already exists, show cancel booking button instead, else show create booking button*/}
-                {bookingId != undefined && bookingId != "undefined" ? (
-                  <form
-                    action={cancelBooking.bind(null, bookingId, service.id)}
-                    className="flex"
-                  >
-                    <button className="flex-1 rounded-xl bg-[#c2410c] px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#9a3412] hover:cursor-pointer">
-                      Cancel Booking
-                    </button>
-                  </form>
-                ) : (
-                  <form
-                    action={createBooking.bind(
-                      null,
-                      customerId,
-                      service.providerId,
-                      service.id,
+                {userType === "customer" ? (
+                  <>
+                    {bookingId && bookingId !== "undefined" ? (
+                      <form
+                        action={cancelBooking.bind(null, bookingId, service.id)}
+                        className="flex"
+                      >
+                        <button className="flex-1 rounded-xl bg-[#c2410c] px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#9a3412] hover:cursor-pointer">
+                          Cancel Booking
+                        </button>
+                      </form>
+                    ) : (
+                      <form
+                        action={createBooking.bind(
+                          null,
+                          customerId,
+                          service.providerId,
+                          service.id,
+                        )}
+                        className="flex"
+                      >
+                        <button className="flex-1 rounded-xl bg-[#c2410c] px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#9a3412] hover:cursor-pointer">
+                          Book Service
+                        </button>
+                      </form>
                     )}
-                    className="flex"
-                  >
-                    <button className="flex-1 rounded-xl bg-[#c2410c] px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#9a3412] hover:cursor-pointer">
-                      Book Service
-                    </button>
-                  </form>
-                )}
 
-                <button className="rounded-xl bg-[#c2410c] px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#9a3412] hover:cursor-pointer">
-                  Contact Provider
-                </button>
+                    <button className="rounded-xl bg-[#c2410c] px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#9a3412] hover:cursor-pointer">
+                      Contact Provider
+                    </button>
+                  </>
+                ) : (
+                  <p className="text-center text-slate-600 mt-15 text-xl">
+                    Please log in with a customer account to book services.
+                  </p>
+                )}
               </aside>
             </div>
           </main>
