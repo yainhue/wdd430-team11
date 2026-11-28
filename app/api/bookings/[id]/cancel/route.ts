@@ -10,28 +10,6 @@ export async function DELETE(
     return Response.json({ error: "Booking not found" }, { status: 404 });
   }
 
-  // try {
-  //   input = await request.json();
-  // } catch {
-  //   return Response.json(
-  //     { error: "Please submit valid booking details." },
-  //     { status: 400 },
-  //   );
-  // }
-
-  // if (typeof input !== "object" || input === null) {
-  //   return Response.json(
-  //     { error: "Please submit valid booking details." },
-  //     { status: 400 },
-  //   );
-  // }
-
-  // const { customerId, providerId, serviceId } = input as {
-  //   customerId: string;
-  //   providerId: string;
-  //   serviceId: string;
-  // };
-
   //  VALIDATION PENDING.
 
   try {
